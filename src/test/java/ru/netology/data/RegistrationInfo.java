@@ -8,9 +8,9 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 public class RegistrationInfo {
-    private final String login;
-    private final String password;
-    private final String status;
+    private String login;
+    private String password;
+    private String status;
 }
 
 

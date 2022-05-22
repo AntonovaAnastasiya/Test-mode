@@ -18,6 +18,7 @@ public class DataGenerator {
 
     private DataGenerator() {
     }
+
     private static RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
             .setPort(9999)
