@@ -1,6 +1,7 @@
 package ru.netology.test;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataGenerator;
@@ -17,6 +18,7 @@ public class AuthTest {
     @BeforeEach
     void setUp() {
         open("http://localhost:9999");
+        Configuration.holdBrowserOpen=true;
     }
 
     @Test
