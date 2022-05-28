@@ -11,6 +11,7 @@ import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static ru.netology.data.DataGenerator.Registration.*;
 
 
 public class AuthTest {
@@ -41,20 +42,22 @@ public class AuthTest {
     }
 
     @Test
-    void noValidPassword(){
-        RegistrationInfo wrongPassword = DataGenerator.Registration.shouldGetInvalidPassword();
-        $("[data-test-id='login'] input").setValue(wrongPassword.getLogin());
-        $("[data-test-id='password'] input").setValue(wrongPassword.getPassword());
-        $(withText("Продолжить")).click();
+    void noValidLogin() {
+        var registeredUser = shouldGetRegisteredUser("active");
+        var wrongLogin = RandomLogin();
+        $("[data-test-id=login] input").setValue(wrongLogin);
+        $("[data-test-id=password] input").setValue(registeredUser.getPassword());
+        $(".button").shouldHave(Condition.text("Продолжить")).click();
         $("[data-test-id=\"error-notification\"]").shouldHave(Condition.text("Неверно указан логин или пароль"));
     }
 
     @Test
-    void noValidLogin(){
-        RegistrationInfo wrongLogin = DataGenerator.Registration.shouldGetInvalidLogin();
-        $("[data-test-id='login'] input").setValue(wrongLogin.getLogin());
-        $("[data-test-id='password'] input").setValue(wrongLogin.getPassword());
-        $(withText("Продолжить")).click();
+    void noValidPassword() {
+        var registeredUser = shouldGetRegisteredUser("active");
+        var wrongPassword = RandomPassword();
+        $("[data-test-id=login] input").setValue(registeredUser.getLogin());
+        $("[data-test-id=password] input").setValue(wrongPassword);
+        $(".button").shouldHave(Condition.text("Продолжить")).click();
         $("[data-test-id=\"error-notification\"]").shouldHave(Condition.text("Неверно указан логин или пароль"));
     }
 }

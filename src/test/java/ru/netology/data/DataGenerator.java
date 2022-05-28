@@ -5,7 +5,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import org.junit.jupiter.api.BeforeAll;
+
 
 import java.util.Locale;
 
@@ -14,12 +14,12 @@ import static io.restassured.RestAssured.given;
 
 public class DataGenerator {
 
-    private static Faker faker = new Faker(new Locale("en"));
+    private static final Faker faker = new Faker(new Locale("en"));
 
     private DataGenerator() {
     }
 
-    private static RequestSpecification requestSpec = new RequestSpecBuilder()
+    private static final RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
             .setPort(9999)
             .setAccept(ContentType.JSON)
@@ -27,7 +27,6 @@ public class DataGenerator {
             .log(LogDetail.ALL)
             .build();
 
-    @BeforeAll
     public static void sendRequest(RegistrationInfo user) {
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
@@ -56,18 +55,11 @@ public class DataGenerator {
             return user;
         }
 
-        public static RegistrationInfo shouldGetInvalidLogin() {
-            String password = RandomPassword();
-            RegistrationInfo user = new RegistrationInfo(RandomLogin(), password, "active");
-            sendRequest(user);
-            return new RegistrationInfo(RandomLogin(), password, "active");
+        public static RegistrationInfo shouldGetRegisteredUser(String status) {
+            RegistrationInfo shouldGetRegisteredUser = getUser(status);
+            sendRequest(shouldGetRegisteredUser);
+            return shouldGetRegisteredUser;
         }
 
-        public static RegistrationInfo shouldGetInvalidPassword() {
-            String login = RandomLogin();
-            RegistrationInfo user = new RegistrationInfo(login, RandomPassword(), "active");
-            sendRequest(user);
-            return new RegistrationInfo(login, RandomPassword(), "active");
-        }
     }
 }
